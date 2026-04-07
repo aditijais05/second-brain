@@ -1,7 +1,0 @@
-chunking
-core
-embeddings
-generation
-ingestion
-retrieval
-tests
