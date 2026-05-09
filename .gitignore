@@ -1,0 +1,8 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / Data
+second_brain.egg-info/
+.venv/

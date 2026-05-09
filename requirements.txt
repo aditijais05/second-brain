@@ -1,0 +1,23 @@
+# Week 1–2: Ingestion pipeline
+pymupdf>=1.23.0          # PDF extraction
+python-frontmatter>=1.1  # Markdown frontmatter
+trafilatura>=1.8.0       # Web article extraction
+
+# Testing
+pytest>=8.0
+pytest-cov>=4.0
+
+# Week 3: Chunking + embeddings
+tiktoken>=0.7             # Token counting (OpenAI tokenizer)
+sentence-transformers>=3  # Local embeddings (free, no API key)
+qdrant-client>=1.9        # Vector store (in-memory or local)
+openai>=1.30              # Optional: OpenAI embeddings (needs API key)
+
+# Week 4: Hybrid search
+rank-bm25>=0.2.2          # BM25 keyword index
+
+# Week 5: API           
+google-genai>=1.0               # Gemini API (free) for citation-grounded generation
+
+# Week 6: UI
+streamlit>=1.35           # Web UI
