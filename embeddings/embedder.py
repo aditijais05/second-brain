@@ -131,7 +131,7 @@ class LocalEmbedder(BaseEmbedder):
     """
 
     DEFAULT_MODEL = "all-MiniLM-L6-v2"
-    BATCH_SIZE = 64
+    BATCH_SIZE = 32  # reduced from 64 to lower peak memory usage
 
     def __init__(self, model_name: str = DEFAULT_MODEL):
         try:
@@ -139,10 +139,14 @@ class LocalEmbedder(BaseEmbedder):
         except ImportError:
             raise ImportError("Run: pip install sentence-transformers")
 
+        # Disable tokenizer parallelism to save memory on server
+        os.environ.setdefault("TOKENIZERS_PARALLELISM", "false")
+
         print(f"Loading local model '{model_name}' (downloads on first run) …")
-        self._model      = SentenceTransformer(model_name)
+        self._model = SentenceTransformer(model_name, device="cpu")
+        self._model.eval()  # disable dropout, reduces memory
         self._model_name = model_name
-        self._dim        = self._model.get_sentence_embedding_dimension()
+        self._dim = self._model.get_sentence_embedding_dimension()
 
     @property
     def dimension(self) -> int:
@@ -152,13 +156,22 @@ class LocalEmbedder(BaseEmbedder):
         print(f"Embedding {len(chunks)} chunks locally with '{self._model_name}' …")
         texts = [c.text for c in chunks]
 
-        # encode() handles batching internally
-        embeddings = self._model.encode(
-            texts,
-            batch_size=self.BATCH_SIZE,
-            show_progress_bar=True,
-            convert_to_numpy=True,
-        )
+        try:
+            import torch
+            with torch.no_grad():
+                embeddings = self._model.encode(
+                    texts,
+                    batch_size=self.BATCH_SIZE,
+                    show_progress_bar=False,  # progress bar wastes memory on server
+                    convert_to_numpy=True,
+                )
+        except ImportError:
+            embeddings = self._model.encode(
+                texts,
+                batch_size=self.BATCH_SIZE,
+                show_progress_bar=False,
+                convert_to_numpy=True,
+            )
 
         for chunk, emb in zip(chunks, embeddings):
             chunk.embedding = emb.tolist()
