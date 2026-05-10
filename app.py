@@ -21,126 +21,142 @@ st.set_page_config(
 
 # ── Custom CSS ─────────────────────────────────────────────────────────────
 
-st.markdown("""
+st.html("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Syne:wght@700;800&display=swap');
 
-/* Base */
+/* ── Base ── */
 html, body, [class*="css"] {
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Space Grotesk', sans-serif;
+    background-color: #0a0a0f;
+    color: #f0eeff;
 }
 
-/* Sidebar */
+/* ── Sidebar ── */
 section[data-testid="stSidebar"] {
-    background: #0d0d0d;
-    border-right: 1px solid #1e1e1e;
+    background: #0d0d15 !important;
+    border-right: 1px solid #1e1a2e;
 }
 section[data-testid="stSidebar"] * {
-    color: #e8e4dc !important;
+    color: #c4b8f0 !important;
 }
 section[data-testid="stSidebar"] .stRadio label {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.8rem;
-    letter-spacing: 0.08em;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: #888 !important;
-}
-section[data-testid="stSidebar"] .stRadio div[data-baseweb="radio"] {
-    gap: 0.2rem;
+    color: #7b6fa0 !important;
 }
 
-/* Main area */
+/* ── Main area ── */
+.main {
+    background-color: #0a0a0f;
+}
 .main .block-container {
-    padding-top: 2rem;
-    max-width: 860px;
+    padding-top: 2.5rem;
+    max-width: 880px;
+    background-color: #0a0a0f;
 }
 
-/* Brand header */
+/* ── Brand header ── */
 .brand {
-    font-family: 'DM Serif Display', serif;
-    font-size: 2rem;
-    color: #0d0d0d;
-    letter-spacing: -0.02em;
+    font-family: 'Syne', sans-serif;
+    font-size: 2.6rem;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: -0.03em;
     margin-bottom: 0;
     line-height: 1;
+    background: linear-gradient(135deg, #ffffff 0%, #b388ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 .brand-sub {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.7rem;
-    color: #888;
-    letter-spacing: 0.12em;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    color: #6b5fa0;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    margin-top: 0.2rem;
-    margin-bottom: 2rem;
+    margin-top: 0.3rem;
+    margin-bottom: 2.5rem;
 }
 
-/* Chat messages */
+/* ── Chat messages ── */
 .msg-user {
-    background: #0d0d0d;
-    color: #e8e4dc;
-    border-radius: 16px 16px 4px 16px;
-    padding: 0.9rem 1.2rem;
-    margin: 0.5rem 0;
-    margin-left: 15%;
+    background: linear-gradient(135deg, #6c3bcc 0%, #4a1fa8 100%);
+    color: #f0eeff;
+    border-radius: 18px 18px 4px 18px;
+    padding: 0.9rem 1.3rem;
+    margin: 0.6rem 0;
+    margin-left: 12%;
     font-size: 0.95rem;
     line-height: 1.6;
+    box-shadow: 0 4px 24px rgba(108, 59, 204, 0.3);
 }
 .msg-assistant {
-    background: #f5f2ec;
-    color: #1a1a1a;
-    border-radius: 4px 16px 16px 16px;
-    padding: 0.9rem 1.2rem;
-    margin: 0.5rem 0;
-    margin-right: 15%;
+    background: #13111f;
+    color: #e8e0ff;
+    border-radius: 4px 18px 18px 18px;
+    padding: 0.9rem 1.3rem;
+    margin: 0.6rem 0;
+    margin-right: 12%;
     font-size: 0.95rem;
     line-height: 1.7;
-    border-left: 3px solid #c8b89a;
+    border-left: 3px solid #7c4dff;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.4);
 }
 
-/* Citation badges */
+/* ── Citation badges ── */
 .citation {
     display: inline-block;
-    background: #0d0d0d;
-    color: #e8e4dc;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.65rem;
+    background: #7c4dff;
+    color: #ffffff;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
     padding: 1px 6px;
     border-radius: 4px;
-    margin: 0 1px;
+    margin: 0 2px;
     vertical-align: super;
     cursor: pointer;
-    text-decoration: none;
+    font-weight: 500;
+    letter-spacing: 0.04em;
 }
 
-/* Source cards */
+/* ── Source cards ── */
 .source-card {
-    background: #faf8f4;
-    border: 1px solid #e8e2d8;
-    border-radius: 8px;
-    padding: 0.8rem 1rem;
-    margin: 0.4rem 0;
+    background: #0f0d1a;
+    border: 1px solid #1e1a2e;
+    border-radius: 10px;
+    padding: 0.9rem 1.1rem;
+    margin: 0.5rem 0;
     font-size: 0.85rem;
+    transition: border-color 0.2s;
+}
+.source-card:hover {
+    border-color: #7c4dff;
 }
 .source-num {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.7rem;
-    color: #888;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    color: #6b5fa0;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.1em;
 }
 .source-title {
-    font-weight: 500;
-    color: #1a1a1a;
-    margin: 0.2rem 0;
+    font-weight: 600;
+    color: #f0eeff;
+    margin: 0.25rem 0;
+    font-size: 0.9rem;
 }
 .source-preview {
-    color: #666;
+    color: #8b7db0;
     font-size: 0.82rem;
     font-style: italic;
     line-height: 1.5;
 }
 
-/* Timeline */
+/* ── Timeline ── */
 .timeline-item {
     display: flex;
     gap: 1.2rem;
@@ -148,11 +164,11 @@ section[data-testid="stSidebar"] .stRadio div[data-baseweb="radio"] {
     align-items: flex-start;
 }
 .timeline-date {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.7rem;
-    color: #888;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    color: #6b5fa0;
     min-width: 90px;
-    padding-top: 0.2rem;
+    padding-top: 0.25rem;
     text-align: right;
     letter-spacing: 0.04em;
 }
@@ -160,87 +176,97 @@ section[data-testid="stSidebar"] .stRadio div[data-baseweb="radio"] {
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background: #0d0d0d;
+    background: #7c4dff;
     margin-top: 0.35rem;
     flex-shrink: 0;
+    box-shadow: 0 0 8px rgba(124, 77, 255, 0.6);
 }
 .timeline-line {
-    border-left: 1px solid #e0dbd2;
+    border-left: 1px solid #1e1a2e;
     margin-left: 4px;
     padding-left: 1.2rem;
     flex: 1;
 }
 .timeline-card {
-    background: #faf8f4;
-    border: 1px solid #e8e2d8;
-    border-radius: 8px;
-    padding: 0.8rem 1rem;
+    background: #0f0d1a;
+    border: 1px solid #1e1a2e;
+    border-radius: 10px;
+    padding: 0.9rem 1.1rem;
 }
 .timeline-card-title {
-    font-weight: 500;
+    font-weight: 600;
     font-size: 0.95rem;
-    color: #1a1a1a;
+    color: #f0eeff;
 }
 .timeline-card-meta {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.68rem;
-    color: #aaa;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.67rem;
+    color: #6b5fa0;
     margin-top: 0.2rem;
     letter-spacing: 0.04em;
 }
 .timeline-card-preview {
     font-size: 0.83rem;
-    color: #666;
+    color: #8b7db0;
     margin-top: 0.4rem;
     line-height: 1.5;
 }
 
-/* Type badges */
+/* ── Type badges ── */
 .badge {
     display: inline-block;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.62rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
     padding: 2px 7px;
     border-radius: 4px;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
     margin-left: 0.4rem;
+    font-weight: 500;
 }
-.badge-pdf      { background: #fde8e0; color: #c05a3a; }
-.badge-markdown { background: #e0ede8; color: #2d7a5a; }
-.badge-url      { background: #e0e8f5; color: #2d4d9a; }
-.badge-notion   { background: #ede8f5; color: #5a3d9a; }
+.badge-pdf      { background: #2a1020; color: #f06292; border: 1px solid #4a1530; }
+.badge-markdown { background: #0d2218; color: #69f0ae; border: 1px solid #1a4030; }
+.badge-url      { background: #0d1a2e; color: #40c4ff; border: 1px solid #1a2e50; }
+.badge-notion   { background: #1a1228; color: #b388ff; border: 1px solid #2e1e50; }
 
-/* Input area */
+/* ── Input area ── */
 .stTextInput input {
     border-radius: 12px !important;
-    border: 1.5px solid #e0dbd2 !important;
-    font-family: 'DM Sans', sans-serif !important;
+    border: 1.5px solid #1e1a2e !important;
+    background: #0f0d1a !important;
+    color: #f0eeff !important;
+    font-family: 'Space Grotesk', sans-serif !important;
     font-size: 0.95rem !important;
-    padding: 0.7rem 1rem !important;
+    padding: 0.75rem 1rem !important;
 }
 .stTextInput input:focus {
-    border-color: #0d0d0d !important;
-    box-shadow: none !important;
+    border-color: #7c4dff !important;
+    box-shadow: 0 0 0 3px rgba(124, 77, 255, 0.15) !important;
+}
+.stTextInput input::placeholder {
+    color: #4a4060 !important;
 }
 
-/* Buttons */
+/* ── Buttons ── */
 .stButton button {
-    background: #0d0d0d !important;
-    color: #e8e4dc !important;
+    background: #7c4dff !important;
+    color: #ffffff !important;
     border: none !important;
-    border-radius: 8px !important;
-    font-family: 'DM Mono', monospace !important;
-    font-size: 0.75rem !important;
-    letter-spacing: 0.06em !important;
+    border-radius: 10px !important;
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 0.72rem !important;
+    letter-spacing: 0.08em !important;
     text-transform: uppercase !important;
-    padding: 0.5rem 1.2rem !important;
+    padding: 0.55rem 1.3rem !important;
+    font-weight: 500 !important;
+    transition: background 0.2s, box-shadow 0.2s !important;
 }
 .stButton button:hover {
-    background: #2a2a2a !important;
+    background: #9c6fff !important;
+    box-shadow: 0 4px 20px rgba(124, 77, 255, 0.4) !important;
 }
 
-/* Stat cards */
+/* ── Stat cards ── */
 .stat-row {
     display: flex;
     gap: 1rem;
@@ -248,53 +274,82 @@ section[data-testid="stSidebar"] .stRadio div[data-baseweb="radio"] {
 }
 .stat-card {
     flex: 1;
-    background: #faf8f4;
-    border: 1px solid #e8e2d8;
-    border-radius: 8px;
-    padding: 1rem 1.2rem;
+    background: #0f0d1a;
+    border: 1px solid #1e1a2e;
+    border-radius: 12px;
+    padding: 1.1rem 1.3rem;
     text-align: center;
 }
 .stat-value {
-    font-family: 'DM Serif Display', serif;
-    font-size: 2rem;
-    color: #0d0d0d;
+    font-family: 'Syne', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #b388ff;
     line-height: 1;
 }
 .stat-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.65rem;
-    color: #888;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.63rem;
+    color: #6b5fa0;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
-    margin-top: 0.3rem;
+    letter-spacing: 0.12em;
+    margin-top: 0.35rem;
 }
 
-/* Expander */
+/* ── Expander ── */
 .streamlit-expanderHeader {
-    font-family: 'DM Mono', monospace !important;
-    font-size: 0.75rem !important;
-    color: #888 !important;
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 0.73rem !important;
+    color: #6b5fa0 !important;
     text-transform: uppercase !important;
-    letter-spacing: 0.08em !important;
+    letter-spacing: 0.1em !important;
 }
 
-/* Divider */
-hr { border-color: #e8e2d8; margin: 1.5rem 0; }
+/* ── Divider ── */
+hr {
+    border-color: #1e1a2e;
+    margin: 1.5rem 0;
+}
 
-/* Hide default Streamlit elements */
+/* ── Info / warning boxes ── */
+.stAlert {
+    background: #0f0d1a !important;
+    border: 1px solid #1e1a2e !important;
+    border-radius: 10px !important;
+    color: #c4b8f0 !important;
+}
+
+/* ── Selectbox / slider ── */
+.stSelectbox > div > div {
+    background: #0f0d1a !important;
+    border-color: #1e1a2e !important;
+    color: #f0eeff !important;
+    border-radius: 10px !important;
+}
+.stSlider .st-bx {
+    background: #7c4dff !important;
+}
+
+/* ── Hide default Streamlit chrome ── */
 #MainMenu, footer, header { visibility: hidden; }
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0a0a0f; }
+::-webkit-scrollbar-thumb { background: #2a2040; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #7c4dff; }
 </style>
-""", unsafe_allow_html=True)
+""")
 
 
 # ── Session state ──────────────────────────────────────────────────────────
 
 def init_state():
     defaults = {
-        "pipeline":    None,
-        "docs":        [],
+        "pipeline":     None,
+        "docs":         [],
         "chat_history": [],
-        "indexed":     False,
+        "indexed":      False,
     }
     for k, v in defaults.items():
         if k not in st.session_state:
@@ -306,7 +361,22 @@ init_state()
 # ── Sidebar ────────────────────────────────────────────────────────────────
 
 with st.sidebar:
-    st.markdown("### 🧠 Second Brain")
+    st.html("""
+    <div style='padding: 0.5rem 0 1rem;'>
+        <div style='font-family: Syne, sans-serif; font-size: 1.4rem; font-weight: 800;
+                    background: linear-gradient(135deg, #ffffff, #b388ff);
+                    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+                    background-clip: text; letter-spacing: -0.02em;'>
+            🧠 Second Brain
+        </div>
+        <div style='font-family: JetBrains Mono, monospace; font-size: 0.6rem;
+                    color: #4a4060; letter-spacing: 0.12em; text-transform: uppercase;
+                    margin-top: 0.2rem;'>
+            Personal Knowledge OS
+        </div>
+    </div>
+    """)
+
     st.markdown("---")
 
     page = st.radio(
@@ -321,24 +391,25 @@ with st.sidebar:
     if st.session_state.indexed:
         doc_count   = len(st.session_state.docs)
         chunk_count = st.session_state.pipeline.vector_store.count()
-        st.markdown(f"""
-        <div style='font-family: DM Mono, monospace; font-size: 0.7rem; color: #4a4; letter-spacing: 0.06em;'>
-        ● INDEXED<br>
-        {doc_count} docs · {chunk_count} chunks
+        st.html(f"""
+        <div style='font-family: JetBrains Mono, monospace; font-size: 0.68rem;
+                    color: #69f0ae; letter-spacing: 0.08em; line-height: 1.8;'>
+            ● INDEXED<br>
+            <span style='color: #4a9060;'>{doc_count} docs · {chunk_count} chunks</span>
         </div>
-        """, unsafe_allow_html=True)
+        """)
     else:
-        st.markdown("""
-        <div style='font-family: DM Mono, monospace; font-size: 0.7rem; color: #888; letter-spacing: 0.06em;'>
-        ○ NOT INDEXED<br>
-        Add docs in Ingest tab
+        st.html("""
+        <div style='font-family: JetBrains Mono, monospace; font-size: 0.68rem;
+                    color: #4a4060; letter-spacing: 0.08em; line-height: 1.8;'>
+            ○ NOT INDEXED<br>
+            Add docs in Ingest tab
         </div>
-        """, unsafe_allow_html=True)
+        """)
 
     st.markdown("---")
 
-    # Settings
-    with st.expander("Settings"):
+    with st.expander("⚙ Settings"):
         embedding_backend = st.selectbox(
             "Embedding model",
             ["local", "openai"],
