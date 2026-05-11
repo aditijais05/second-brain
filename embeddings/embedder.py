@@ -2,15 +2,17 @@
 Embedder — converts Chunks into vector embeddings.
 
 Supports two backends:
-  1. OpenAI  — text-embedding-3-small  (best quality, needs API key)
-  2. Local   — sentence-transformers   (free, runs on CPU, good quality)
+  1. OpenAI    — text-embedding-3-small  (best quality, needs API key)
+  2. Local     — fastembed (ONNX-based, free, no torch, ~50MB, runs on CPU)
 
-The embedder batches requests automatically to stay within API rate limits
-and avoid sending 1000 individual API calls.
+Switched from sentence-transformers to fastembed for production deployment
+because sentence-transformers pulls in torch (~400MB) which exceeds the
+512MB memory limit on Render's free tier. fastembed uses ONNX runtime
+instead — same quality, fraction of the memory.
 
 Install:
-    pip install openai                      # for OpenAI backend
-    pip install sentence-transformers       # for local backend
+    pip install openai       # for OpenAI backend
+    pip install fastembed    # for local backend
 """
 
 from __future__ import annotations
@@ -64,9 +66,9 @@ class OpenAIEmbedder(BaseEmbedder):
         chunks   = embedder.embed_chunks(chunks)
     """
 
-    MODEL     = "text-embedding-3-small"
-    DIMENSION = 1536
-    BATCH_SIZE = 100   # OpenAI allows up to 2048 inputs per request
+    MODEL      = "text-embedding-3-small"
+    DIMENSION  = 1536
+    BATCH_SIZE = 100
 
     def __init__(self, api_key: str | None = None):
         try:
@@ -98,7 +100,6 @@ class OpenAIEmbedder(BaseEmbedder):
 
             print("✓")
 
-            # Avoid rate-limit on large ingestions
             if batch_num < len(batches):
                 time.sleep(0.5)
 
@@ -110,73 +111,63 @@ class OpenAIEmbedder(BaseEmbedder):
 
 
 # ---------------------------------------------------------------------------
-# Local backend (sentence-transformers)
+# Local backend (fastembed — ONNX, no torch)
 # ---------------------------------------------------------------------------
 
 class LocalEmbedder(BaseEmbedder):
     """
-    Runs a sentence-transformers model locally on CPU (or GPU if available).
+    Runs embeddings locally using fastembed (ONNX runtime, no torch).
 
-    No API key needed. Good for development and offline use.
+    Why fastembed instead of sentence-transformers?
+    - sentence-transformers imports torch (~400MB RAM) — too heavy for
+      free cloud tiers (Render free = 512MB limit)
+    - fastembed uses ONNX runtime (~50MB RAM) with similar quality
 
-    Recommended model: "all-MiniLM-L6-v2"
+    Default model: "BAAI/bge-small-en-v1.5"
       - 384-dimensional embeddings
-      - ~80MB download on first run
-      - Fast on CPU (~500 chunks/min)
+      - ~130MB download on first run (cached after that)
+      - Fast on CPU
 
     Usage:
-        embedder = LocalEmbedder()                          # default model
-        embedder = LocalEmbedder("BAAI/bge-small-en-v1.5") # better quality
+        embedder = LocalEmbedder()
         chunks   = embedder.embed_chunks(chunks)
     """
 
-    DEFAULT_MODEL = "all-MiniLM-L6-v2"
-    BATCH_SIZE = 32  # reduced from 64 to lower peak memory usage
+    DEFAULT_MODEL = "BAAI/bge-small-en-v1.5"
+    BATCH_SIZE    = 32
 
     def __init__(self, model_name: str = DEFAULT_MODEL):
         try:
-            from sentence_transformers import SentenceTransformer
+            from fastembed import TextEmbedding
         except ImportError:
-            raise ImportError("Run: pip install sentence-transformers")
+            raise ImportError("Run: pip install fastembed")
 
-        # Disable tokenizer parallelism to save memory on server
         os.environ.setdefault("TOKENIZERS_PARALLELISM", "false")
 
-        print(f"Loading local model '{model_name}' (downloads on first run) …")
-        self._model = SentenceTransformer(model_name, device="cpu")
-        self._model.eval()  # disable dropout, reduces memory
+        print(f"Loading fastembed model '{model_name}' (downloads on first run) …")
+        self._model      = TextEmbedding(model_name=model_name)
         self._model_name = model_name
-        self._dim = self._model.get_sentence_embedding_dimension()
+
+        # Get dimension by embedding a test string
+        test = list(self._model.embed(["test"]))
+        self._dim = len(test[0])
+        print(f"Model ready. Embedding dimension: {self._dim}")
 
     @property
     def dimension(self) -> int:
         return self._dim
 
     def embed_chunks(self, chunks: list[Chunk]) -> list[Chunk]:
-        print(f"Embedding {len(chunks)} chunks locally with '{self._model_name}' …")
+        print(f"Embedding {len(chunks)} chunks with '{self._model_name}' …")
         texts = [c.text for c in chunks]
 
-        try:
-            import torch
-            with torch.no_grad():
-                embeddings = self._model.encode(
-                    texts,
-                    batch_size=self.BATCH_SIZE,
-                    show_progress_bar=False,  # progress bar wastes memory on server
-                    convert_to_numpy=True,
-                )
-        except ImportError:
-            embeddings = self._model.encode(
-                texts,
-                batch_size=self.BATCH_SIZE,
-                show_progress_bar=False,
-                convert_to_numpy=True,
-            )
+        # fastembed.embed() returns a generator — convert to list
+        embeddings = list(self._model.embed(texts))
 
         for chunk, emb in zip(chunks, embeddings):
             chunk.embedding = emb.tolist()
 
-        print(f"Done. Embedding dimension: {self._dim}")
+        print(f"Done. {len(chunks)} chunks embedded.")
         return chunks
 
 
@@ -193,7 +184,7 @@ def get_embedder(
 
     Usage:
         embedder = get_embedder("openai")   # needs OPENAI_API_KEY env var
-        embedder = get_embedder("local")    # free, runs on your machine
+        embedder = get_embedder("local")    # free, ONNX-based, no torch
     """
     if backend == "openai":
         return OpenAIEmbedder(**kwargs)

@@ -9,7 +9,7 @@ pytest-cov>=4.0
 
 # Week 3: Chunking + embeddings
 tiktoken>=0.7             # Token counting (OpenAI tokenizer)
-sentence-transformers>=3  # Local embeddings (free, no API key)
+fastembed>=0.3.0          # Lightweight ONNX embeddings (no torch, ~50MB)
 qdrant-client>=1.9        # Vector store (in-memory or local)
 openai>=1.30              # Optional: OpenAI embeddings (needs API key)
 
@@ -17,7 +17,10 @@ openai>=1.30              # Optional: OpenAI embeddings (needs API key)
 rank-bm25>=0.2.2          # BM25 keyword index
 
 # Week 5: API           
-google-genai>=1.0               # Gemini API (free) for citation-grounded generation
+google-genai>=1.0         # Gemini API (free) for citation-grounded generation
 
 # Week 6: UI
 streamlit>=1.35           # Web UI
+
+# Week 7: Evaluation
+ragas>=0.1.0              # RAG evaluation metrics
