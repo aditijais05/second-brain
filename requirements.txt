@@ -8,9 +8,8 @@ pytest>=8.0
 pytest-cov>=4.0
 
 # Week 3: Chunking + embeddings
-tiktoken>=0.7             # Token counting (OpenAI tokenizer)
-fastembed>=0.3.6          # Lightweight ONNX embeddings (no torch, ~50MB)
-qdrant-client>=1.9        # Vector store (in-memory or local)
+tiktoken>=0.7
+qdrant-client[fastembed]>=1.9
 openai>=1.30              # Optional: OpenAI embeddings (needs API key)
 
 # Week 4: Hybrid search
