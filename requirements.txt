@@ -17,6 +17,7 @@ rank-bm25>=0.2.2         # BM25 keyword index
 
 # Week 5: API
 google-genai>=1.0        # Gemini API — generation + embeddings (text-embedding-004)
+fastembed
 
 # Week 6: UI
 streamlit>=1.35          # Web UI
