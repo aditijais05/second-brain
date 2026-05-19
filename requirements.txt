@@ -9,17 +9,17 @@ pytest-cov>=4.0
 
 # Week 3: Chunking + embeddings
 tiktoken>=0.7
-qdrant-client[fastembed]>=1.9
-openai>=1.30              # Optional: OpenAI embeddings (needs API key)
+qdrant-client>=1.9       # Vector store (no fastembed extra — avoids Rust compile on Render)
+openai>=1.30             # Optional: OpenAI embeddings (needs OPENAI_API_KEY)
 
 # Week 4: Hybrid search
-rank-bm25>=0.2.2          # BM25 keyword index
+rank-bm25>=0.2.2         # BM25 keyword index
 
-# Week 5: API           
-google-genai>=1.0         # Gemini API (free) for citation-grounded generation
+# Week 5: API
+google-genai>=1.0        # Gemini API — generation + embeddings (text-embedding-004)
 
 # Week 6: UI
-streamlit>=1.35           # Web UI
+streamlit>=1.35          # Web UI
 
 # Week 7: Evaluation
-ragas>=0.1.0              # RAG evaluation metrics
+ragas>=0.1.0             # RAG evaluation metrics
